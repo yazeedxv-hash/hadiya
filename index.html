@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>هدية</title>
+  <meta name="description" content="هدية: موقع بسيط لتوزيع المُهدين بسرّية (فكرة مثل Secret Santa بدون طابع كريسماس)." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#0b1220;
+      --card:#121a2b;
+      --muted:#9aa7bd;
+      --text:#eef3ff;
+      --accent:#7c5cff;
+      --accent2:#22c55e;
+      --danger:#ef4444;
+      --border:rgba(255,255,255,.08);
+      --shadow: 0 12px 35px rgba(0,0,0,.35);
+      --radius:16px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:"Tajawal", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background: radial-gradient(1200px 800px at 80% -20%, rgba(124,92,255,.35), transparent 55%),
+                  radial-gradient(900px 700px at 10% 0%, rgba(34,197,94,.18), transparent 55%),
+                  var(--bg);
+      color:var(--text);
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:24px;
+    }
+    .wrap{width:min(980px, 100%)}
+    header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      margin-bottom:18px;
+    }
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+    .logo{
+      width:48px;height:48px;border-radius:14px;
+      background: linear-gradient(135deg, rgba(124,92,255,.95), rgba(34,197,94,.75));
+      box-shadow: var(--shadow);
+      display:grid;place-items:center;
+      font-size:22px;
+    }
+    h1{margin:0;font-weight:800;letter-spacing:.2px}
+    .subtitle{margin:4px 0 0;color:var(--muted);font-size:14px}
+    .pill{
+      border:1px solid var(--border);
+      padding:10px 12px;
+      border-radius:999px;
+      color:var(--muted);
+      font-size:13px;
+      display:flex;
+      gap:8px;
+      align-items:center;
+      background: rgba(255,255,255,.03);
+    }
+    .grid{
+      display:grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap:16px;
+    }
+    @media (max-width: 900px){
+      .grid{grid-template-columns:1fr}
+      header{flex-direction:column; align-items:flex-start}
+    }
+    .card{
+      background: rgba(18,26,43,.88);
+      border:1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .card .head{
+      padding:16px 18px;
+      border-bottom:1px solid var(--border);
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+    }
+    .card .head h2{
+      margin:0;
+      font-size:16px;
+      font-weight:800;
+    }
+    .card .body{padding:16px 18px}
+    label{display:block;margin:0 0 8px;color:var(--muted);font-size:13px}
+    textarea, input{
+      width:100%;
+      background: rgba(255,255,255,.04);
+      color:var(--text);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding:12px 12px;
+      font-family:inherit;
+      font-size:15px;
+      outline:none;
+    }
+    textarea{min-height:190px; resize:vertical; line-height:1.75}
+    input{height:44px}
+    .row{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:10px}
+    @media (max-width:600px){ .row{grid-template-columns:1fr} }
+    .btns{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:12px;
+    }
+    button{
+      border:0;
+      border-radius: 12px;
+      padding: 11px 14px;
+      font-family:inherit;
+      font-weight:800;
+      cursor:pointer;
+      transition: transform .05s ease, filter .15s ease;
+      color: #0b1220;
+      background: linear-gradient(135deg, var(--accent), #a78bfa);
+    }
+    button:active{transform:scale(.99)}
+    button.secondary{
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+      border:1px solid var(--border);
+      font-weight:700;
+    }
+    button.danger{
+      background: rgba(239,68,68,.12);
+      color: #fecaca;
+      border:1px solid rgba(239,68,68,.28);
+      font-weight:800;
+    }
+    .hint{margin-top:10px;color:var(--muted);font-size:13px;line-height:1.7}
+    .tiny{font-size:12px;color:var(--muted)}
+    .badge{
+      display:inline-flex; gap:8px; align-items:center;
+      padding:8px 10px; border-radius:999px;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.03);
+      color:var(--muted);
+      font-size:12px;
+    }
+    .results{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      margin-top:8px;
+    }
+    .result{
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 12px 12px;
+      background: rgba(255,255,255,.03);
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      align-items:flex-start;
+    }
+    .who{font-weight:800}
+    .to{color:var(--muted); margin-top:4px}
+    .copy{
+      white-space:nowrap;
+      font-weight:800;
+      background: rgba(34,197,94,.12);
+      border:1px solid rgba(34,197,94,.28);
+      color:#bbf7d0;
+    }
+    .msg{
+      margin-top:10px;
+      padding:10px 12px;
+      border-radius: 12px;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.03);
+      color:var(--muted);
+      line-height:1.7;
+    }
+    .msg strong{color:var(--text)}
+    .footer{
+      margin-top:14px;
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+      color:var(--muted);
+      font-size:12px;
+    }
+    a{color:#c7d2fe; text-decoration:none}
+    a:hover{text-decoration:underline}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="logo">🎁</div>
+        <div>
+          <h1>هدية</h1>
+          <div class="subtitle">وزّع المُهدين بسرّية — نفس مفهوم Secret Santa لكن بدون طابع كريسماس</div>
+        </div>
+      </div>
+      <div class="pill" title="كل شيء يتم داخل المتصفح فقط">
+        <span>🔒</span>
+        <span>البيانات لا تُرسل لأي سيرفر</span>
+      </div>
+    </header>
+
+    <div class="grid">
+      <!-- Left: Input -->
+      <section class="card">
+        <div class="head">
+          <h2>إعداد القرعة</h2>
+          <span class="badge">حد أدنى: 3 مشاركين</span>
+        </div>
+        <div class="body">
+          <label for="eventName">اسم المناسبة (اختياري)</label>
+          <input id="eventName" placeholder="مثال: هدايا المكتب / فعالية القروب / عيد الفطر" />
+
+          <div class="row">
+            <div>
+              <label for="budget">الميزانية (اختياري)</label>
+              <input id="budget" placeholder="مثال: 100 ريال" />
+            </div>
+            <div>
+              <label for="notes">ملاحظات (اختياري)</label>
+              <input id="notes" placeholder="مثال: ممنوع هدايا مزاح ثقيلة 😄" />
+            </div>
+          </div>
+
+          <div style="margin-top:12px">
+            <label for="names">الأسماء (كل اسم في سطر)</label>
+            <textarea id="names" placeholder="سليمان&#10;تركي&#10;نورة&#10;سارة"></textarea>
+          </div>
+
+          <div class="btns">
+            <button id="btnDraw" type="button">وزّع الهدايا</button>
+            <button id="btnShuffleOnly" class="secondary" type="button">خلط فقط</button>
+            <button id="btnClear" class="danger" type="button">مسح</button>
+          </div>
+
+          <div class="hint">
+            ✅ بعد التوزيع، كل شخص يضغط على اسمه من اليمين ويظهر له الشخص اللي بيهديه.  
+            <br>💡 تقدر تستخدم زر "نسخ" لإرسال النتيجة للشخص بشكل خاص (واتساب مثلًا).
+          </div>
+        </div>
+      </section>
+
+      <!-- Right: Reveal -->
+      <section class="card">
+        <div class="head">
+          <h2>إظهار النتيجة بشكل خاص</h2>
+          <span class="badge">عرض فردي</span>
+        </div>
+        <div class="body">
+          <label for="chooser">اختر اسمك</label>
+          <select id="chooser" style="width:100%;height:44px;border-radius:12px;background:rgba(255,255,255,.04);color:var(--text);border:1px solid var(--border);padding:10px 12px;font-family:inherit;font-size:15px;outline:none">
+            <option value="">— لازم تسوي التوزيع أول —</option>
+          </select>
+
+          <div id="privateBox" class="msg" style="display:none"></div>
+
+          <div class="results" id="publicResults" style="display:none"></div>
+
+          <div class="footer">
+            <div>© <span id="year"></span> هدية</div>
+            <div class="tiny">Tip: افتح الصفحة على جوالك وخل كل شخص يختار اسمه بنفسه.</div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+<script>
+(function(){
+  const $ = (id) => document.getElementById(id);
+
+  const btnDraw = $("btnDraw");
+  const btnShuffleOnly = $("btnShuffleOnly");
+  const btnClear = $("btnClear");
+
+  const namesEl = $("names");
+  const chooser = $("chooser");
+  const privateBox = $("privateBox");
+  const publicResults = $("publicResults");
+
+  const eventName = $("eventName");
+  const budget = $("budget");
+  const notes = $("notes");
+
+  $("year").textContent = new Date().getFullYear();
+
+  let assignment = null; // { giver: receiver }
+
+  function normalizeNames(text){
+    return text
+      .split("\n")
+      .map(s => s.trim())
+      .filter(Boolean)
+      .filter((v, i, a) => a.indexOf(v) === i); // remove duplicates
+  }
+
+  function shuffle(array){
+    for (let i = array.length - 1; i > 0; i--){
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+  }
+
+  function buildCycle(names){
+    // Simple cycle: shuffled[i] -> shuffled[i+1], last -> first
+    const shuffled = shuffle([...names]);
+    const map = {};
+    for (let i = 0; i < shuffled.length; i++){
+      map[shuffled[i]] = shuffled[(i + 1) % shuffled.length];
+    }
+    return { shuffled, map };
+  }
+
+  function resetUI(){
+    chooser.innerHTML = '<option value="">— لازم تسوي التوزيع أول —</option>';
+    privateBox.style.display = "none";
+    privateBox.innerHTML = "";
+    publicResults.style.display = "none";
+    publicResults.innerHTML = "";
+  }
+
+  function renderChooser(names){
+    chooser.innerHTML = '<option value="">اختر اسمك…</option>';
+    names.forEach(n => {
+      const opt = document.createElement("option");
+      opt.value = n;
+      opt.textContent = n;
+      chooser.appendChild(opt);
+    });
+  }
+
+  function renderPrivate(giver){
+    if (!assignment || !assignment.map[giver]) return;
+
+    const receiver = assignment.map[giver];
+    const title = (eventName.value || "").trim();
+    const bud = (budget.value || "").trim();
+    const note = (notes.value || "").trim();
+
+    const lines = [];
+    if (title) lines.push(`🎉 المناسبة: ${title}`);
+    if (bud) lines.push(`💰 الميزانية: ${bud}`);
+    if (note) lines.push(`📝 ملاحظة: ${note}`);
+    lines.push(`\n${giver}، أنت راح تهدي: 🎁 ${receiver}`);
+
+    const shareText = lines.join("\n");
+
+    privateBox.style.display = "block";
+    privateBox.innerHTML = `
+      <div><strong>${giver}</strong> — نتيجتك السرّية:</div>
+      <div style="margin-top:8px;color:var(--text);font-weight:800">🎁 أنت راح تهدي: ${receiver}</div>
+      <div class="tiny" style="margin-top:8px">ملاحظة: لا تشارك هالنتيجة إلا للشخص المعني.</div>
+      <div class="btns" style="margin-top:10px">
+        <button class="copy" type="button" id="btnCopy">نسخ لإرسالها</button>
+        <button class="secondary" type="button" id="btnHide">إخفاء</button>
+      </div>
+    `;
+
+    $("btnCopy").onclick = async () => {
+      try{
+        await navigator.clipboard.writeText(shareText);
+        $("btnCopy").textContent = "✅ تم النسخ";
+        setTimeout(()=> $("btnCopy").textContent = "نسخ لإرسالها", 1200);
+      }catch(e){
+        alert("ما قدرت أنسخ تلقائيًا. جرّب من المتصفح أو انسخ يدويًا.");
+      }
+    };
+
+    $("btnHide").onclick = () => {
+      privateBox.style.display = "none";
+      privateBox.innerHTML = "";
+      chooser.value = "";
+    };
+  }
+
+  function draw(){
+    const names = normalizeNames(namesEl.value);
+    if (names.length < 3){
+      alert("أدخل 3 أسماء على الأقل (كل اسم في سطر).");
+      return;
+    }
+
+    assignment = buildCycle(names);
+
+    resetUI();
+    renderChooser(assignment.shuffled);
+
+    // Optional: show full list of givers (not revealing receivers) — we keep it hidden by default.
+    publicResults.style.display = "none";
+  }
+
+  function shuffleOnly(){
+    const names = normalizeNames(namesEl.value);
+    if (names.length < 2){
+      alert("أدخل اسمين على الأقل عشان أقدر أخلط.");
+      return;
+    }
+    const shuffled = shuffle([...names]);
+    namesEl.value = shuffled.join("\n");
+  }
+
+  function clearAll(){
+    if (!confirm("تبغى تمسح كل شيء؟")) return;
+    namesEl.value = "";
+    eventName.value = "";
+    budget.value = "";
+    notes.value = "";
+    assignment = null;
+    resetUI();
+  }
+
+  btnDraw.addEventListener("click", draw);
+  btnShuffleOnly.addEventListener("click", shuffleOnly);
+  btnClear.addEventListener("click", clearAll);
+
+  chooser.addEventListener("change", (e) => {
+    const giver = e.target.value;
+    if (!giver){ privateBox.style.display="none"; privateBox.innerHTML=""; return; }
+    renderPrivate(giver);
+  });
+
+})();
+</script>
+</body>
+</html>
