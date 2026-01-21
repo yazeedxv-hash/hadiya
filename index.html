@@ -65,7 +65,7 @@
       <div class="pill"><span>🔒</span><span>البيانات لا تُرسل لأي سيرفر</span></div>
     </header>
 
-    <div class="grid">
+    <div class="grid" id="organizerArea">
       <section class="card">
         <div class="head"><h2>المنظّم</h2><span class="badge">يولّد رابط + رموز</span></div>
         <div class="body">
@@ -113,7 +113,7 @@
           <div id="codesBox" class="hide" style="margin-top:12px"></div>
 
           <div class="footer">
-            <div>© <span id="year"></span> هدية</div>
+            <div>© <span id="year"></span> هدية <span class="tiny mono" id="buildTag"></span></div>
             <div class="tiny">تنبيه: رمز 3 أرقام يكفي للقروبات الصغيرة.</div>
           </div>
         </div>
@@ -150,6 +150,9 @@
 (() => {
   const $ = (id) => document.getElementById(id);
   $("year").textContent = new Date().getFullYear();
+  const BUILD = "v9";
+  const buildEl = document.getElementById("buildTag");
+  if(buildEl) buildEl.textContent = "• " + BUILD;
   const STORAGE_KEY = "hadiya_last_draw_v1";
 
   function updateNameCount(){
@@ -382,6 +385,8 @@
 
   const t = parseTokenFromHash();
   if(t){
+    const org = document.getElementById("organizerArea");
+    if(org) org.classList.add("hide");
     try{
       const payload = JSON.parse(b64urlDecode(t));
       if(!payload || !payload.pairs || !payload.pins) throw new Error("bad");
@@ -417,6 +422,7 @@
         // Keep digits only (supports any accidental symbols/spaces) then take first 3
         const pin = (normalizeDigits(rawPin).match(/\d/g) || []).join("").slice(0,3);
         if(!name){ alert("اختر اسمك."); return; }
+        document.getElementById("guestPin").value = pin;
         if(pin.length !== 3){ alert("اكتب رمز 3 أرقام (مثال: 042)."); return; }
         if(!pins[name] || pins[name] !== pin){
           resultBox.classList.remove("hide"); btnCopyResult.classList.add("hide");
