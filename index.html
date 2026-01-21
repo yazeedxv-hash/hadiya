@@ -216,6 +216,15 @@
   }
   const pad3 = (n) => String(n).padStart(3,"0");
 
+  function normalizeDigits(s){
+    // Convert Arabic-Indic digits (٠١٢٣٤٥٦٧٨٩) and Eastern Arabic-Indic (۰۱۲۳۴۵۶۷۸۹) to ASCII
+    return String(s || "")
+      .trim()
+      .replace(/[٠-٩]/g, d => String("٠١٢٣٤٥٦٧٨٩".indexOf(d)))
+      .replace(/[۰-۹]/g, d => String("۰۱۲۳۴۵۶۷۸۹".indexOf(d)))
+      .replace(/\s+/g, "");
+  }
+
   const linkBox = $("linkBox");
   const codesBox = $("codesBox");
   const btnCopyLink = $("btnCopyLink");
@@ -377,6 +386,7 @@
       const payload = JSON.parse(b64urlDecode(t));
       if(!payload || !payload.pairs || !payload.pins) throw new Error("bad");
       document.getElementById("guestView").classList.remove("hide");
+      const gridEl = document.querySelector(".grid"); if(gridEl) gridEl.classList.add("hide");
 
       const lines = [];
       if(payload.eventName) lines.push(`🎉 المناسبة: <strong>${escapeHtml(payload.eventName)}</strong>`);
@@ -392,13 +402,22 @@
       sel.innerHTML = '<option value="">اختر اسمك…</option>' + Object.keys(pins).map(n => `<option value="${escapeHtml(n)}">${escapeHtml(n)}</option>`).join("");
 
       const resultBox = document.getElementById("resultBox");
+      const guestPinEl = document.getElementById("guestPin");
+      if(guestPinEl){
+        guestPinEl.addEventListener("input", () => {
+          const norm = normalizeDigits(guestPinEl.value).slice(0,3);
+          guestPinEl.value = norm;
+        });
+      }
       const btnCopyResult = document.getElementById("btnCopyResult");
 
       document.getElementById("btnShow").onclick = async () => {
         const name = sel.value;
-        const pin = (document.getElementById("guestPin").value||"").trim();
+        const rawPin = document.getElementById("guestPin").value || "";
+        // Keep digits only (supports any accidental symbols/spaces) then take first 3
+        const pin = (normalizeDigits(rawPin).match(/\d/g) || []).join("").slice(0,3);
         if(!name){ alert("اختر اسمك."); return; }
-        if(!/^\\d{3}$/.test(pin)){ alert("اكتب رمز 3 أرقام (مثال: 042)."); return; }
+        if(pin.length !== 3){ alert("اكتب رمز 3 أرقام (مثال: 042)."); return; }
         if(!pins[name] || pins[name] !== pin){
           resultBox.classList.remove("hide"); btnCopyResult.classList.add("hide");
           resultBox.innerHTML = "❌ الرمز غير صحيح.";
