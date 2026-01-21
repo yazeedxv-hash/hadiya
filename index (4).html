@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>هدية</title>
+  <meta name="description" content="هدية: رابط واحد + قائمة أسماء + رمز 3 أرقام لعرض النتيجة." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg:#0b1220;--muted:#9aa7bd;--text:#eef3ff;--accent:#7c5cff;--danger:#ef4444;--border:rgba(255,255,255,.08);--shadow:0 12px 35px rgba(0,0,0,.35);--radius:16px;}
+    *{box-sizing:border-box}
+    body{margin:0;font-family:"Tajawal",system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:radial-gradient(1200px 800px at 80% -20%,rgba(124,92,255,.35),transparent 55%),radial-gradient(900px 700px at 10% 0%,rgba(34,197,94,.18),transparent 55%),var(--bg);color:var(--text);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;}
+    .wrap{width:min(1020px,100%)}
+    header{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:18px}
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{width:48px;height:48px;border-radius:14px;background:linear-gradient(135deg,rgba(124,92,255,.95),rgba(34,197,94,.75));box-shadow:var(--shadow);display:grid;place-items:center;font-size:22px}
+    h1{margin:0;font-weight:800}
+    .subtitle{margin:4px 0 0;color:var(--muted);font-size:14px}
+    .pill{border:1px solid var(--border);padding:10px 12px;border-radius:999px;color:var(--muted);font-size:13px;display:flex;gap:8px;align-items:center;background:rgba(255,255,255,.03)}
+    .grid{display:grid;grid-template-columns:1.05fr .95fr;gap:16px}
+    @media(max-width:900px){.grid{grid-template-columns:1fr}header{flex-direction:column;align-items:flex-start}}
+    .card{background:rgba(18,26,43,.88);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow);overflow:hidden}
+    .head{padding:16px 18px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;gap:10px}
+    .head h2{margin:0;font-size:16px;font-weight:800}
+    .body{padding:16px 18px}
+    label{display:block;margin:0 0 8px;color:var(--muted);font-size:13px}
+    textarea,input,select{width:100%;background:rgba(255,255,255,.04);color:var(--text);border:1px solid var(--border);border-radius:12px;padding:12px 12px;font-family:inherit;font-size:15px;outline:none}
+    textarea{min-height:190px;resize:vertical;line-height:1.75}
+    input,select{height:44px}
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+    @media(max-width:600px){.row{grid-template-columns:1fr}}
+    .btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+    button{border:0;border-radius:12px;padding:11px 14px;font-family:inherit;font-weight:800;cursor:pointer;color:#0b1220;background:linear-gradient(135deg,var(--accent),#a78bfa)}
+    button.secondary{background:rgba(255,255,255,.06);color:var(--text);border:1px solid var(--border);font-weight:700}
+    button.danger{background:rgba(239,68,68,.12);color:#fecaca;border:1px solid rgba(239,68,68,.28);font-weight:800}
+    button.copy{background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.28);color:#bbf7d0}
+    .hint{margin-top:10px;color:var(--muted);font-size:13px;line-height:1.7}
+    .badge{display:inline-flex;gap:8px;align-items:center;padding:8px 10px;border-radius:999px;border:1px solid var(--border);background:rgba(255,255,255,.03);color:var(--muted);font-size:12px}
+    .msg{margin-top:10px;padding:10px 12px;border-radius:12px;border:1px solid var(--border);background:rgba(255,255,255,.03);color:var(--muted);line-height:1.7;word-break:break-word}
+    .msg strong{color:var(--text)}
+    .hide{display:none!important}
+    .tiny{font-size:12px;color:var(--muted)}
+    .footer{margin-top:14px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;color:var(--muted);font-size:12px}
+    table{width:100%;border-collapse:separate;border-spacing:0 10px}
+    th,td{padding:10px 12px;text-align:right}
+    thead th{color:var(--muted);font-weight:800;font-size:12px}
+    tbody td{background:rgba(255,255,255,.03);border:1px solid var(--border)}
+    tbody td:first-child{border-top-right-radius:12px;border-bottom-right-radius:12px}
+    tbody td:last-child{border-top-left-radius:12px;border-bottom-left-radius:12px}
+    .mono{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="logo">🎁</div>
+        <div>
+          <h1>هدية</h1>
+          <div class="subtitle">رابط واحد + قائمة أسماء + رمز 3 أرقام لعرض النتيجة</div>
+        </div>
+      </div>
+      <div class="pill"><span>🔒</span><span>البيانات لا تُرسل لأي سيرفر</span></div>
+    </header>
+
+    <div class="grid">
+      <section class="card">
+        <div class="head"><h2>المنظّم</h2><span class="badge">يولّد رابط + رموز</span></div>
+        <div class="body">
+          <div id="restoreBanner" class="msg hide"></div>
+
+          <label for="eventName">اسم المناسبة (اختياري)</label>
+          <input id="eventName" placeholder="مثال: هدايا المكتب / فعالية القروب" />
+
+          <div class="row">
+            <div><label for="budget">الميزانية (اختياري)</label><input id="budget" placeholder="مثال: 100 ريال" /></div>
+            <div><label for="notes">ملاحظات (اختياري)</label><input id="notes" placeholder="مثال: ممنوع هدايا مزاح ثقيلة 😄" /></div>
+          </div>
+
+          <div style="margin-top:12px">
+            <label for="names">الأسماء (كل اسم في سطر)</label>
+            <textarea id="names" placeholder="سليمان&#10;تركي&#10;نورة&#10;سارة"></textarea>
+          </div>
+
+          <div class="btns">
+            <button id="btnMake" type="button">توليد الرابط والرموز</button>
+            <button id="btnShuffleOnly" class="secondary" type="button">خلط فقط</button>
+            <button id="btnClear" class="danger" type="button">مسح</button>
+          </div>
+
+          <div class="hint">
+            ✅ بعد التوليد: أرسل <strong>الرابط الواحد</strong> بالقروب، ثم أرسل <strong>رمز 3 أرقام</strong> لكل شخص على الخاص.<br>
+            💾 يتم حفظ القرعة تلقائيًا على جهازك (نفس الجوال/المتصفح).
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="head"><h2>الرابط + رموز 3 أرقام</h2><span class="badge">انسخ وأرسل</span></div>
+        <div class="body">
+          <div id="linkBox" class="msg">اضغط <strong>توليد الرابط والرموز</strong> عشان يظهر الرابط وجدول الرموز.</div>
+
+          <div class="btns">
+            <button id="btnCopyLink" class="copy hide" type="button">نسخ الرابط</button>
+            <button id="btnOpenGuest" class="secondary hide" type="button">فتح كضيف للاختبار</button>
+            <button id="btnCopyCodes" class="secondary hide" type="button">نسخ جدول الرموز</button>
+            <button id="btnBackup" class="secondary hide" type="button">نسخ (الرابط + الرموز)</button>
+          </div>
+
+          <div id="codesBox" class="hide" style="margin-top:12px"></div>
+
+          <div class="footer">
+            <div>© <span id="year"></span> هدية</div>
+            <div class="tiny">تنبيه: رمز 3 أرقام يكفي للقروبات الصغيرة.</div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div id="guestView" class="card hide" style="margin-top:16px">
+      <div class="head"><h2>الضيف: نتيجتك</h2><span class="badge">اختر اسمك + رمزك</span></div>
+      <div class="body">
+        <div id="guestMeta" class="msg"></div>
+
+        <div class="row" style="margin-top:12px">
+          <div>
+            <label for="guestSelect">اسمك</label>
+            <select id="guestSelect"><option value="">اختر اسمك…</option></select>
+          </div>
+          <div>
+            <label for="guestPin">الرمز (3 أرقام)</label>
+            <input id="guestPin" inputmode="numeric" maxlength="3" placeholder="مثال: 042" class="mono" />
+          </div>
+        </div>
+
+        <div class="btns">
+          <button id="btnShow" type="button">عرض نتيجتي</button>
+          <button id="btnCopyResult" class="copy hide" type="button">نسخ النتيجة</button>
+        </div>
+
+        <div id="resultBox" class="msg hide"></div>
+      </div>
+    </div>
+  </div>
+
+<script>
+(() => {
+  const $ = (id) => document.getElementById(id);
+  $("year").textContent = new Date().getFullYear();
+  const STORAGE_KEY = "hadiya_last_draw_v1";
+
+  function normalizeNames(text){
+    // Support iOS/Safari newlines (), Windows (
+), and simple comma-separated input
+    return text
+      .split(/[
+]+|[,،]+/)
+      .map(s=>s.trim())
+      .filter(Boolean)
+      .filter((v,i,a)=>a.indexOf(v)===i);
+  }
+  function shuffle(arr){
+    for(let i=arr.length-1;i>0;i--){
+      const j=Math.floor(Math.random()*(i+1));
+      [arr[i],arr[j]]=[arr[j],arr[i]];
+    }
+    return arr;
+  }
+  function buildCycle(names){
+    const shuffled = shuffle([...names]);
+    const map = {};
+    for(let i=0;i<shuffled.length;i++) map[shuffled[i]] = shuffled[(i+1)%shuffled.length];
+    return {shuffled, map};
+  }
+  function b64urlEncode(str){
+    const b64 = btoa(unescape(encodeURIComponent(str)));
+    return b64.replace(/\\+/g,'-').replace(/\\//g,'_').replace(/=+$/,'');
+  }
+  function b64urlDecode(str){
+    const pad = str.length % 4 ? '='.repeat(4-(str.length%4)) : '';
+    const b64 = (str+pad).replace(/-/g,'+').replace(/_/g,'/');
+    return decodeURIComponent(escape(atob(b64)));
+  }
+  function baseUrl(){ return location.origin + location.pathname; }
+  async function copyText(txt){ try{ await navigator.clipboard.writeText(txt); return true; }catch(e){ return false; } }
+  function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+  function parseTokenFromHash(){
+    const h = location.hash || "";
+    const m = h.match(/(?:^|#|&)d=([^&]+)/);
+    return m ? m[1] : null;
+  }
+  const pad3 = (n) => String(n).padStart(3,"0");
+
+  const linkBox = $("linkBox");
+  const codesBox = $("codesBox");
+  const btnCopyLink = $("btnCopyLink");
+  const btnOpenGuest = $("btnOpenGuest");
+  const btnCopyCodes = $("btnCopyCodes");
+  const btnBackup = $("btnBackup");
+  const restoreBanner = $("restoreBanner");
+
+  function renderOrganizerOutputs({link, names, pins}){
+    linkBox.innerHTML = `✅ هذا هو <strong>الرابط الواحد</strong> (أرسله بالقروب):<br><span class="tiny" style="word-break:break-all">${escapeHtml(link)}</span>`;
+    btnCopyLink.classList.remove("hide");
+    btnOpenGuest.classList.remove("hide");
+    btnCopyCodes.classList.remove("hide");
+    btnBackup.classList.remove("hide");
+
+    btnCopyLink.onclick = async () => {
+      const ok = await copyText(link);
+      if(ok){ btnCopyLink.textContent="✅ تم النسخ"; setTimeout(()=>btnCopyLink.textContent="نسخ الرابط",1200); }
+      else { prompt("انسخ الرابط يدويًا:", link); }
+    };
+    btnOpenGuest.onclick = () => window.open(link, "_blank");
+
+    codesBox.classList.remove("hide");
+    const rows = names.map(n => `<tr><td>${escapeHtml(n)}</td><td class="mono">${escapeHtml(pins[n])}</td></tr>`).join("");
+    codesBox.innerHTML = `
+      <div class="msg">📩 أرسل رمز كل شخص له على الخاص (بدون ما ترسل له غيره).</div>
+      <table>
+        <thead><tr><th>الاسم</th><th>الرمز (3 أرقام)</th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    `;
+
+    btnCopyCodes.onclick = async () => {
+      const lines = names.map(n => `${n}\\t${pins[n]}`).join("\\n");
+      const ok = await copyText(lines);
+      if(ok){ btnCopyCodes.textContent="✅ تم النسخ"; setTimeout(()=>btnCopyCodes.textContent="نسخ جدول الرموز",1200); }
+      else { prompt("انسخ الجدول:", lines); }
+    };
+
+    btnBackup.onclick = async () => {
+      const lines = [
+        "🎁 هدية — نسخة احتياط",
+        "",
+        "🔗 الرابط:",
+        link,
+        "",
+        "🔢 الرموز (اسم \\t رمز):",
+        ...names.map(n => `${n}\\t${pins[n]}`)
+      ].join("\\n");
+      const ok = await copyText(lines);
+      if(ok){ btnBackup.textContent="✅ تم النسخ"; setTimeout(()=>btnBackup.textContent="نسخ (الرابط + الرموز)",1400); }
+      else { prompt("انسخ النسخة الاحتياطية:", lines); }
+    };
+  }
+
+  function saveLastDraw(obj){
+    try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(obj)); }catch(e){}
+  }
+  function loadLastDraw(){
+    try{
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if(!raw) return null;
+      return JSON.parse(raw);
+    }catch(e){ return null; }
+  }
+  function clearLastDraw(){ try{ localStorage.removeItem(STORAGE_KEY); }catch(e){} }
+
+  function showRestoreBanner(saved){
+    if(!saved) return;
+    if(parseTokenFromHash()) return;
+
+    const dt = saved.savedAt ? new Date(saved.savedAt) : null;
+    const when = dt && !isNaN(dt) ? dt.toLocaleString("ar-SA") : "سابقًا";
+
+    restoreBanner.classList.remove("hide");
+    restoreBanner.innerHTML = `
+      💾 تم العثور على قرعة محفوظة (${escapeHtml(when)}).<br>
+      <div class="btns" style="margin-top:10px">
+        <button id="btnRestoreNow" class="secondary" type="button">استعادة</button>
+        <button id="btnForget" class="danger" type="button">حذف الحفظ</button>
+      </div>
+      <div class="tiny" style="margin-top:8px">تُحفظ على نفس الجهاز والمتصفح فقط.</div>
+    `;
+    document.getElementById("btnRestoreNow").onclick = () => restoreSaved(saved);
+    document.getElementById("btnForget").onclick = () => { clearLastDraw(); restoreBanner.classList.add("hide"); };
+  }
+
+  function restoreSaved(saved){
+    $("eventName").value = saved.eventName || "";
+    $("budget").value = saved.budget || "";
+    $("notes").value = saved.notes || "";
+    $("names").value = (saved.names || []).join("\\n");
+    if(saved.link && saved.pins && saved.names){
+      renderOrganizerOutputs({link: saved.link, names: saved.names, pins: saved.pins});
+    }
+    restoreBanner.classList.add("hide");
+  }
+
+  $("btnMake").onclick = async () => {
+    const names = normalizeNames($("names").value);
+    if(names.length < 3){ alert("أدخل 3 أسماء على الأقل."); return; }
+    if(names.length > 1000){ alert("عدد المشاركين كبير جدًا لرمز 3 أرقام."); return; }
+
+    const title = ($("eventName").value||"").trim();
+    const bud = ($("budget").value||"").trim();
+    const note = ($("notes").value||"").trim();
+
+    const assignment = buildCycle(names);
+
+    const used = new Set();
+    const pins = {};
+    for(const person of names){
+      let pin;
+      do { pin = pad3(Math.floor(Math.random()*1000)); } while(used.has(pin));
+      used.add(pin);
+      pins[person] = pin;
+    }
+
+    const pairs = Object.keys(assignment.map).map(k => [k, assignment.map[k]]);
+    const payload = {v:1, eventName:title, budget:bud, notes:note, pairs, pins};
+    const token = b64urlEncode(JSON.stringify(payload));
+    const link = baseUrl() + "#d=" + token;
+
+    renderOrganizerOutputs({link, names, pins});
+
+    saveLastDraw({
+      savedAt: new Date().toISOString(),
+      eventName: title, budget: bud, notes: note,
+      names, pins, link
+    });
+  };
+
+  $("btnShuffleOnly").onclick = () => {
+    const names = normalizeNames($("names").value);
+    if(names.length < 2){ alert("أدخل اسمين على الأقل."); return; }
+    $("names").value = shuffle([...names]).join("\\n");
+  };
+
+  $("btnClear").onclick = () => {
+    if(!confirm("تبغى تمسح كل شيء؟")) return;
+    $("names").value=""; $("eventName").value=""; $("budget").value=""; $("notes").value="";
+    linkBox.innerHTML = "اضغط <strong>توليد الرابط والرموز</strong> عشان يظهر الرابط وجدول الرموز.";
+    codesBox.classList.add("hide"); codesBox.innerHTML="";
+    btnCopyLink.classList.add("hide"); btnOpenGuest.classList.add("hide"); btnCopyCodes.classList.add("hide"); btnBackup.classList.add("hide");
+    clearLastDraw();
+  };
+
+  const t = parseTokenFromHash();
+  if(t){
+    try{
+      const payload = JSON.parse(b64urlDecode(t));
+      if(!payload || !payload.pairs || !payload.pins) throw new Error("bad");
+      document.getElementById("guestView").classList.remove("hide");
+
+      const lines = [];
+      if(payload.eventName) lines.push(`🎉 المناسبة: <strong>${escapeHtml(payload.eventName)}</strong>`);
+      if(payload.budget) lines.push(`💰 الميزانية: <strong>${escapeHtml(payload.budget)}</strong>`);
+      if(payload.notes) lines.push(`📝 ملاحظة: <strong>${escapeHtml(payload.notes)}</strong>`);
+      if(!lines.length) lines.push("اختر اسمك وأدخل رمزك لعرض نتيجتك.");
+      document.getElementById("guestMeta").innerHTML = lines.join("<br>");
+
+      const pairMap = new Map(payload.pairs || []);
+      const pins = payload.pins || {};
+
+      const sel = document.getElementById("guestSelect");
+      sel.innerHTML = '<option value="">اختر اسمك…</option>' + Object.keys(pins).map(n => `<option value="${escapeHtml(n)}">${escapeHtml(n)}</option>`).join("");
+
+      const resultBox = document.getElementById("resultBox");
+      const btnCopyResult = document.getElementById("btnCopyResult");
+
+      document.getElementById("btnShow").onclick = async () => {
+        const name = sel.value;
+        const pin = (document.getElementById("guestPin").value||"").trim();
+        if(!name){ alert("اختر اسمك."); return; }
+        if(!/^\\d{3}$/.test(pin)){ alert("اكتب رمز 3 أرقام (مثال: 042)."); return; }
+        if(!pins[name] || pins[name] !== pin){
+          resultBox.classList.remove("hide"); btnCopyResult.classList.add("hide");
+          resultBox.innerHTML = "❌ الرمز غير صحيح.";
+          return;
+        }
+        const receiver = pairMap.get(name);
+        resultBox.classList.remove("hide");
+        resultBox.innerHTML = `✅ يا <strong>${escapeHtml(name)}</strong>، أنت راح تهدي: <strong>${escapeHtml(receiver)}</strong> 🎁`;
+
+        const shareLines = [];
+        if(payload.eventName) shareLines.push(`🎉 المناسبة: ${payload.eventName}`);
+        if(payload.budget) shareLines.push(`💰 الميزانية: ${payload.budget}`);
+        if(payload.notes) shareLines.push(`📝 ملاحظة: ${payload.notes}`);
+        shareLines.push("");
+        shareLines.push(`${name}، أنت راح تهدي: 🎁 ${receiver}`);
+        const shareText = shareLines.join("\\n");
+
+        btnCopyResult.classList.remove("hide");
+        btnCopyResult.onclick = async () => {
+          const ok = await copyText(shareText);
+          if(ok){ btnCopyResult.textContent="✅ تم النسخ"; setTimeout(()=>btnCopyResult.textContent="نسخ النتيجة",1200); }
+          else { prompt("انسخ الرسالة:", shareText); }
+        };
+      };
+    }catch(e){}
+  } else {
+    const saved = loadLastDraw();
+    showRestoreBanner(saved);
+  }
+})();
+</script>
+</body>
+</html>
